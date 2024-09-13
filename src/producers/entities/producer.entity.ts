@@ -14,10 +14,9 @@ export class Producer {
   @Column()
   senha!: string;
 
-  @Column()
+  @Column({ unique: true })
   telefone!: string;
 
-  // Alterar o tipo de 'timestamp' para 'datetime' para suportar SQLite
   @Column({ type: 'datetime', default: () => 'CURRENT_TIMESTAMP' })
   createdAt!: Date;
 }

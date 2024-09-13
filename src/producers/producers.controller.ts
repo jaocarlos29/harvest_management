@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Param, Put, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Put, Delete, ParseIntPipe } from '@nestjs/common';
 import { ProducersService } from './producers.service';
 import { CreateProducerDto } from './dtos/create-producer.dto';
 import { UpdateProducerDto } from './dtos/update-producer.dto';
@@ -18,17 +18,17 @@ export class ProducersController {
     }
 
     @Get(':id')
-    findOne(@Param('id') id: string) {
-        return this.producersService.findOne(+id);
+    findOne(@Param('id', ParseIntPipe) id: number) {
+        return this.producersService.findOne(id);
     }
 
     @Put(':id')
-    update(@Param('id') id: string, @Body() updateProducerDto: UpdateProducerDto) {
-        return this.producersService.update(+id, updateProducerDto);
+    update(@Param('id', ParseIntPipe) id: number, @Body() updateProducerDto: UpdateProducerDto) {
+        return this.producersService.update(id, updateProducerDto);
     }
 
-    @Delete(':id')
-    remove(@Param('id') id: string) {
-        return this.producersService.remove(+id);
+    @Delete(':id',)
+    remove(@Param('id', ParseIntPipe) id: number) {
+        return this.producersService.remove(id);
     }
 }
