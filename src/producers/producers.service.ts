@@ -49,13 +49,9 @@ export class ProducersService {
                     throw new ConflictException(errors.join(' e '));
                 }
             }
-
             throw new InternalServerErrorException('Erro ao criar o produtor');
         }
     }
-
-
-
 
     async findAll() {
         try {

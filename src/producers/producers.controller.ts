@@ -2,7 +2,9 @@ import { Controller, Get, Post, Body, Param, Put, Delete, ParseIntPipe } from '@
 import { ProducersService } from './producers.service';
 import { CreateProducerDto } from './dtos/create-producer.dto';
 import { UpdateProducerDto } from './dtos/update-producer.dto';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('producers')
 @Controller('producers')
 export class ProducersController {
     constructor(private readonly producersService: ProducersService) { }
@@ -27,7 +29,7 @@ export class ProducersController {
         return this.producersService.update(id, updateProducerDto);
     }
 
-    @Delete(':id',)
+    @Delete(':id')
     remove(@Param('id', ParseIntPipe) id: number) {
         return this.producersService.remove(id);
     }
