@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { typeOrmConfig } from './database/typeorm.config';
-import { ProducersModule } from './producers/producers.module';
+import { ProducersModule } from './modules/producers/producers.module';
 
 @Module({
   imports: [

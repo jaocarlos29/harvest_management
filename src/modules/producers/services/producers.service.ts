@@ -1,9 +1,9 @@
 import { ConflictException, Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { QueryFailedError, Repository } from 'typeorm';
-import { Producer } from './entities/producer.entity';
-import { CreateProducerDto } from './dtos/create-producer.dto';
-import { UpdateProducerDto } from './dtos/update-producer.dto';
+import { Producer } from '../entities/producer.entity';
+import { CreateProducerDto } from '../dtos/create-producer.dto';
+import { UpdateProducerDto } from '../dtos/update-producer.dto';
 
 @Injectable()
 export class ProducersService {

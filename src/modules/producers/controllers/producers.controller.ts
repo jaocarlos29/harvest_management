@@ -1,7 +1,7 @@
 import { Controller, Get, Post, Body, Param, Put, Delete, ParseIntPipe } from '@nestjs/common';
-import { ProducersService } from './producers.service';
-import { CreateProducerDto } from './dtos/create-producer.dto';
-import { UpdateProducerDto } from './dtos/update-producer.dto';
+import { ProducersService } from '../services/producers.service';
+import { CreateProducerDto } from '../dtos/create-producer.dto';
+import { UpdateProducerDto } from '../dtos/update-producer.dto';
 import { ApiTags } from '@nestjs/swagger';
 
 @ApiTags('producers')
