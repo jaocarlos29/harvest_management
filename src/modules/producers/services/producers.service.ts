@@ -4,6 +4,8 @@ import { QueryFailedError, Repository } from 'typeorm';
 import { Producer } from '../entities/producer.entity';
 import { CreateProducerDto } from '../dtos/create-producer.dto';
 import { UpdateProducerDto } from '../dtos/update-producer.dto';
+import * as bcrypt from 'bcrypt';
+
 
 @Injectable()
 export class ProducersService {
@@ -13,7 +15,7 @@ export class ProducersService {
     ) { }
 
     async create(createProducerDto: CreateProducerDto) {
-        const { email, telefone } = createProducerDto;
+        const { email, telefone, senha } = createProducerDto;
 
         const existingProducerByEmail = await this.producersRepository.findOne({ where: { email } });
         const existingProducerByTelefone = await this.producersRepository.findOne({ where: { telefone } });
@@ -33,7 +35,13 @@ export class ProducersService {
         }
 
         try {
-            const producer = this.producersRepository.create(createProducerDto);
+            const saltRounds = 10; // Você pode ajustar os rounds conforme necessário
+            const hashedPassword = await bcrypt.hash(senha, saltRounds);
+
+            const producer = this.producersRepository.create({
+                ...createProducerDto,
+                senha: hashedPassword,
+            });
             return await this.producersRepository.save(producer);
         }
         catch (error) {
@@ -82,18 +90,26 @@ export class ProducersService {
 
     async update(id: number, updateProducerDto: UpdateProducerDto) {
         try {
-            const updateResult = await this.producersRepository.update(id, updateProducerDto);
+            const producer = await this.producersRepository.findOne({ where: { id } });
 
-            if (!updateResult.affected) {
+            if (!producer) {
                 throw new NotFoundException(`Produtor com id ${id} não encontrado`);
             }
-            return updateResult;
+
+            if (updateProducerDto.senha) {
+                const saltRounds = 10;
+                updateProducerDto.senha = await bcrypt.hash(updateProducerDto.senha, saltRounds);
+            }
+
+            Object.assign(producer, updateProducerDto);
+            return await this.producersRepository.save(producer);
         }
         catch (error) {
+            console.error(`Erro ao atualizar o produtor com id ${id}:`, error);
+
             if (error instanceof NotFoundException) {
                 throw error;
             }
-            console.error(`Erro ao atualizar o produtor com id ${id}:`, error);
             throw new InternalServerErrorException('Erro ao atualizar o produtor');
         }
     }
